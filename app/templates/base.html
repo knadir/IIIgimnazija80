@@ -50,6 +50,7 @@
               {% if g.user.is_authenticated() %}
               <li><a href="{{ url_for('user', nickname=g.user.nickname) }}">{{ _('Your Profile') }}</a></li>
               <li><a href="{{ url_for('logout') }}">{{ _('Logout') }}</a></li>
+              <li><a href="{{ url_for('IV03') }}">{{ _('IV03') }}</a></li>
               {% endif %}
             </ul>
           <div class="nav-collapse collapse">
