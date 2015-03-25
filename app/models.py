@@ -123,6 +123,12 @@ class Dolaze(db.Model):
     ime_i_prezime = db.Column(db.String(50))
     razred_id = db.Column(db.Integer, db.ForeignKey('razredi.id'))
 
+    def ko_dolazi(self):
+        return Post.query.join(
+            followers, (followers.c.followed_id == Post.user_id)).filter(
+                followers.c.follower_id == self.id).order_by(
+                    Post.timestamp.desc())
+
     def __repr__(self):  # pragma: no cover
         return '<Dolaze %r>' % (self.body)
 
