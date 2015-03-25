@@ -95,11 +95,11 @@ def IV03(page=1):
         db.session.commit()
         flash(gettext('Your post is now live!'))
         return redirect(url_for('index'))
-#    dolaze = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    dolaze = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
     posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
     return render_template('IV03.html',
                            title='Home',
- #                          dolaze=dolaze,
+                           dolaze=dolaze,
                            form=form,
                            posts=posts)
 
