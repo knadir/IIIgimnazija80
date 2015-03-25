@@ -106,5 +106,26 @@ class Post(db.Model):
         return '<Post %r>' % (self.body)
 
 
+class Razredi(db.Model):
+    __searchable__ = ['body']
+
+    id = db.Column(db.Integer, primary_key=True)
+    razred = db.Column(db.String(5))
+
+    def __repr__(self):  # pragma: no cover
+        return '<Razredi %r>' % (self.body)
+
+
+class Dolaze(db.Model):
+    __searchable__ = ['body']
+
+    id = db.Column(db.Integer, primary_key=True)
+    ime_i_prezime = db.Column(db.String(50))
+    razred_id = db.Column(db.Integer, db.ForeignKey('razredi.id'))
+
+    def __repr__(self):  # pragma: no cover
+        return '<Dolaze %r>' % (self.body)
+
+
 if enable_search:
     whooshalchemy.whoosh_index(app, Post)
