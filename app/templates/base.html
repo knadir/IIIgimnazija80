@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     {% if title %}
     <title>{{ title }} - microblog</title>
     {% else %}
@@ -33,38 +33,44 @@
             $(destId).show();
         });
     }
+
+
     </script>
-  </head>
-  <body>
-    <div class="container">
-      <div class="navbar">
+</head>
+<body>
+<div class="container">
+    <div class="navbar">
         <div class="navbar-inner">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="{{ url_for('index') }}">microblog</a>
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="{{ url_for('index') }}">microblog</a>
             <ul class="nav">
-              <li><a href="{{ url_for('index') }}">{{ _('Home') }}</a></li>
-              {% if g.user.is_authenticated() %}
-              <li><a href="{{ url_for('user', nickname=g.user.nickname) }}">{{ _('Your Profile') }}</a></li>
-              <li><a href="{{ url_for('logout') }}">{{ _('Logout') }}</a></li>
-              <li><a href="{{ url_for('IV03') }}">{{ _('IV03') }}</a></li>
-              {% endif %}
+                <li><a href="{{ url_for('index') }}">{{ _('Home') }}</a></li>
+                {% if g.user.is_authenticated() %}
+                <li><a href="{{ url_for('user', nickname=g.user.nickname) }}">{{ _('Your Profile') }}</a></li>
+                <li><a href="{{ url_for('logout') }}">{{ _('Logout') }}</a></li>
+                <li><a href="{{ url_for('IV03') }}">{{ _('IV03') }}</a></li>
+                {% endif %}
             </ul>
-          <div class="nav-collapse collapse">
-            {% if g.user.is_authenticated() %}
-            <form class="navbar-search pull-right" action="{{ url_for('search') }}" method="post" name="search">{{ g.search_form.hidden_tag() }}{{ g.search_form.search(size=20, placeholder=_('Search'), class="search-query")}}</form>
-            {% endif %}
-          </div>
+            <div class="nav-collapse collapse">
+                {% if g.user.is_authenticated() %}
+                <form class="navbar-search pull-right" action="{{ url_for('search') }}" method="post" name="search">{{
+                    g.search_form.hidden_tag() }}{{ g.search_form.search(size=20, placeholder=_('Search'),
+                    class="search-query")}}
+                </form>
+                {% endif %}
+            </div>
         </div>
-      </div>
-      <div class="row">
+        <p align="right">{{ _('Dobro došli, %(nickname)s!', nickname=g.user.nickname) }}</p>
+    </div>
+    <div class="row">
         <div class="span12">
-          {% block content %}{% endblock %}
+            {% block content %}{% endblock %}
         </div>
-      </div>
-    </div>   
-  </body>
+    </div>
+</div>
+</body>
 </html>

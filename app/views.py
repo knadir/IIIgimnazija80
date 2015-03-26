@@ -35,7 +35,6 @@ def before_request():
         g.search_form = SearchForm()
     g.locale = get_locale()
 
-
 @app.after_request
 def after_request(response):
     for query in get_debug_queries():
@@ -95,14 +94,23 @@ def IV03(page=1):
         db.session.commit()
         flash(gettext('Your post is now live!'))
         return redirect(url_for('index'))
-    dolaze = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    dolaze = Dolaze.query.filter_by(razred_id=3).all()
     posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
     return render_template('IV03.html',
-                           title='Home',
+                           title='IV-03',
                            dolaze=dolaze,
                            form=form,
                            posts=posts)
 
+@app.route('/emails.html')
+def emails():
+    email_addresses = g.db.execute("SELECT email FROM email_addresses").fetchall()
+    return render_template('emails.html', email_addresses=email_addresses)
+
+@app.route('/user/<username>')
+def show_user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('show_user.html', user=user)
 
 @app.route('/login', methods=['GET', 'POST'])
 @oid.loginhandler
