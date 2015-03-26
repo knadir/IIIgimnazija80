@@ -94,7 +94,7 @@ def IV03(page=1):
         db.session.commit()
         flash(gettext('Your post is now live!'))
         return redirect(url_for('index'))
-    dolaze = Dolaze.query.filter_by(razred_id=3).all()
+    dolaze = Dolaze.query.filter_by(razred_id=3).order_by(Dolaze.ime_i_prezime).all()
     posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
     return render_template('IV03.html',
                            title='IV-03',

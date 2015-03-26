@@ -1,8 +1,15 @@
-<table class="table table-hover">
+<table class="table table-striped">
     <tr>
-        <td>
-            <p><strong><span id="ime_i_prezime{{ dolaze.id }}">{{ dolaze.ime_i_prezime }}</span></strong></p>
-
+        <td><strong>
+            {{ pojedinac.ime_i_prezime }} </strong>
+        </td>
+        <td><strong>
+            {{ pojedinac.ime_i_prezime }} </strong>
         </td>
     </tr>
 </table>
+<script>
+function myFunction(x) {
+    alert("Row index is: " + x.rowIndex);
+}
+</script>

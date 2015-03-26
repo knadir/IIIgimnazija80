@@ -3,8 +3,9 @@
 
 {% block content %}
 {% include 'flash.html' %}
+<h2>Dolaze na proslavu:</h2>
 {% for pojedinac in dolaze %}
-{{ pojedinac.ime_i_prezime }}
+{{loop.index}}
 {% include 'dolaze.html' %}
 {% endfor %}
 <div class="well">
