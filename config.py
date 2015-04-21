@@ -12,7 +12,7 @@ OPENID_PROVIDERS = [
     {'name': 'Flickr', 'url': 'http://www.flickr.com/<username>'},
     {'name': 'MyOpenID', 'url': 'https://www.myopenid.com'}]
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:Naco612973@localhost:5432/flask"
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:SelmaMalik612973@localhost:5432/flask"
 
 # if os.environ.get('DATABASE_URL') is None:
 #     SQLALCHEMY_DATABASE_URI = ('sqlite:///' + os.path.join(basedir, 'app.db') +

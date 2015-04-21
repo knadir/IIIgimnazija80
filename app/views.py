@@ -2,13 +2,13 @@ from flask import render_template, flash, redirect, session, url_for, request, \
     g, jsonify
 from flask.ext.login import login_user, logout_user, current_user, \
     login_required
-from flask.ext.sqlalchemy import get_debug_queries
+from flask.ext.sqlalchemy import get_debug_queries,functools
 from flask.ext.babel import gettext
 from datetime import datetime
 from guess_language import guessLanguage
 from app import app, db, lm, oid, babel
 from .forms import LoginForm, EditForm, PostForm, SearchForm
-from .models import User, Post, Dolaze, Razredi
+from .models import User, Post, Dolaze, Razredi, Dnevnik
 from .emails import follower_notification
 from .translate import microsoft_translate
 from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS, LANGUAGES, \
@@ -34,6 +34,7 @@ def before_request():
         db.session.commit()
         g.search_form = SearchForm()
     g.locale = get_locale()
+
 
 @app.after_request
 def after_request(response):
@@ -79,6 +80,53 @@ def index(page=1):
                            form=form,
                            posts=posts)
 
+@app.route('/IV01', methods=['GET', 'POST'])
+@login_required
+def IV01(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Your post is now live!'))
+        return redirect(url_for('index'))
+    dnevnik = Dnevnik.query.filter_by(razred='IV01').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV01').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('IV01.html',
+                           title='IV-01',
+                           dnevnik=dnevnik,
+                           dolaze=dolaze,
+                           form=form,
+                           posts=posts)
+
+@app.route('/IV02', methods=['GET', 'POST'])
+@login_required
+def IV02(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Your post is now live!'))
+        return redirect(url_for('index'))
+    dnevnik = Dnevnik.query.filter_by(razred='IV02').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV02').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('IV02.html',
+                           title='IV-02',
+                           dnevnik=dnevnik,
+                           dolaze=dolaze,
+                           form=form,
+                           posts=posts)
 
 @app.route('/IV03', methods=['GET', 'POST'])
 @login_required
@@ -94,23 +142,231 @@ def IV03(page=1):
         db.session.commit()
         flash(gettext('Your post is now live!'))
         return redirect(url_for('index'))
-    dolaze = Dolaze.query.filter_by(razred_id=3).order_by(Dolaze.ime_i_prezime).all()
+    dnevnik = Dnevnik.query.filter_by(razred='IV03').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV03').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
     posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
     return render_template('IV03.html',
                            title='IV-03',
+                           dnevnik=dnevnik,
                            dolaze=dolaze,
                            form=form,
                            posts=posts)
 
-@app.route('/emails.html')
-def emails():
-    email_addresses = g.db.execute("SELECT email FROM email_addresses").fetchall()
-    return render_template('emails.html', email_addresses=email_addresses)
+@app.route('/IV04', methods=['GET', 'POST'])
+@login_required
+def IV04(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Your post is now live!'))
+        return redirect(url_for('index'))
+    dnevnik = Dnevnik.query.filter_by(razred='IV04').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV04').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('IV04.html',
+                           title='IV-04',
+                           dnevnik=dnevnik,
+                           dolaze=dolaze,
+                           form=form,
+                           posts=posts)
 
-@app.route('/user/<username>')
-def show_user(username):
-    user = User.query.filter_by(username=username).first_or_404()
-    return render_template('show_user.html', user=user)
+@app.route('/IV05', methods=['GET', 'POST'])
+@login_required
+def IV05(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Your post is now live!'))
+        return redirect(url_for('index'))
+    dnevnik = Dnevnik.query.filter_by(razred='IV05').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV05').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('IV05.html',
+                           title='IV-05',
+                           dnevnik=dnevnik,
+                           dolaze=dolaze,
+                           form=form,
+                           posts=posts)
+
+@app.route('/IV06', methods=['GET', 'POST'])
+@login_required
+def IV06(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Your post is now live!'))
+        return redirect(url_for('index'))
+    dnevnik = Dnevnik.query.filter_by(razred='IV06').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV06').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('IV06.html',
+                           title='IV-06',
+                           dnevnik=dnevnik,
+                           dolaze=dolaze,
+                           form=form,
+                           posts=posts)
+
+@app.route('/IV07', methods=['GET', 'POST'])
+@login_required
+def IV07(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Your post is now live!'))
+        return redirect(url_for('index'))
+    dnevnik = Dnevnik.query.filter_by(razred='IV07').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV07').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('IV07.html',
+                           title='IV-07',
+                           dnevnik=dnevnik,
+                           dolaze=dolaze,
+                           form=form,
+                           posts=posts)
+
+@app.route('/IV08', methods=['GET', 'POST'])
+@login_required
+def IV08(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Your post is now live!'))
+        return redirect(url_for('index'))
+    dnevnik = Dnevnik.query.filter_by(razred='IV08').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV08').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('IV08.html',
+                           title='IV-08',
+                           dnevnik=dnevnik,
+                           dolaze=dolaze,
+                           form=form,
+                           posts=posts)
+
+@app.route('/IV09', methods=['GET', 'POST'])
+@login_required
+def IV09(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Your post is now live!'))
+        return redirect(url_for('index'))
+    dnevnik = Dnevnik.query.filter_by(razred='IV09').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV09').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('IV09.html',
+                           title='IV-09',
+                           dnevnik=dnevnik,
+                           dolaze=dolaze,
+                           form=form,
+                           posts=posts)
+
+@app.route('/IV10', methods=['GET', 'POST'])
+@login_required
+def IV10(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Your post is now live!'))
+        return redirect(url_for('index'))
+    dnevnik = Dnevnik.query.filter_by(razred='IV10').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV10').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('IV10.html',
+                           title='IV-10',
+                           dnevnik=dnevnik,
+                           dolaze=dolaze,
+                           form=form,
+                           posts=posts)
+
+@app.route('/IV11', methods=['GET', 'POST'])
+@login_required
+def IV11(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Your post is now live!'))
+        return redirect(url_for('index'))
+    dnevnik = Dnevnik.query.filter_by(razred='IV11').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV11').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('IV11.html',
+                           title='IV-11',
+                           dnevnik=dnevnik,
+                           dolaze=dolaze,
+                           form=form,
+                           posts=posts)
+
+@app.route('/IV12', methods=['GET', 'POST'])
+@login_required
+def IV12(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Your post is now live!'))
+        return redirect(url_for('index'))
+    dnevnik = Dnevnik.query.filter_by(razred='IV12').order_by(Dnevnik.prezime).all()
+    dolaze = Dnevnik.query.filter_by(razred='IV12').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('IV12.html',
+                           title='IV-12',
+                           dnevnik=dnevnik,
+                           dolaze=dolaze,
+                           form=form,
+                           posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
 @oid.loginhandler

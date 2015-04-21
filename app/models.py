@@ -105,7 +105,6 @@ class Post(db.Model):
     def __repr__(self):  # pragma: no cover
         return '<Post %r>' % (self.body)
 
-
 class Razredi(db.Model):
     __searchable__ = ['body']
 
@@ -121,17 +120,26 @@ class Dolaze(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     ime_i_prezime = db.Column(db.String(50))
+    prezime = db.Column(db.String(30))
+    ime = db.Column(db.String(15))
     razred_id = db.Column(db.Integer, db.ForeignKey('razredi.id'))
-
-    def ko_dolazi(self):
-        return Post.query.join(
-            followers, (followers.c.followed_id == Post.user_id)).filter(
-                followers.c.follower_id == self.id).order_by(
-                    Post.timestamp.desc())
 
     def __repr__(self):  # pragma: no cover
         return '<Dolaze %r>' % (self.body)
 
+
+class Dnevnik(db.Model):
+    __searchable__ = ['body']
+
+    id = db.Column(db.Integer, primary_key=True)
+    ime_i_prezime = db.Column(db.String(50))
+    razred = db.Column(db.String(4))
+    ime = db.Column(db.String(15))
+    prezime = db.Column(db.String(30))
+    dolazi = db.Column(db.String(1))
+
+    def __repr__(self):  # pragma: no cover
+        return '<Dnevnik %r>' % (self.body)
 
 if enable_search:
     whooshalchemy.whoosh_index(app, Post)
