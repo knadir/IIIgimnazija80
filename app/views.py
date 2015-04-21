@@ -72,11 +72,51 @@ def index(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
     return render_template('index.html',
-                           title='Home',
+                           title='Početna',
+                           form=form,
+                           posts=posts)
+
+@app.route('/proslava', methods=['GET', 'POST'])
+@login_required
+def proslava(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Tvoje slanje je sada živo!'))
+        return redirect(url_for('index'))
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('proslava.html',
+                           title='Proslava',
+                           form=form,
+                           posts=posts)
+
+@app.route('/prosirenaproslava', methods=['GET', 'POST'])
+@login_required
+def prosirenaproslava(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guessLanguage(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(),
+                    author=g.user, language=language)
+        db.session.add(post)
+        db.session.commit()
+        flash(gettext('Tvoje slanje je sada živo!'))
+        return redirect(url_for('index'))
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('prosirenaproslava.html',
+                           title='Prosirena proslava',
                            form=form,
                            posts=posts)
 
@@ -92,7 +132,7 @@ def IV01(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV01').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV01').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
@@ -116,7 +156,7 @@ def IV02(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV02').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV02').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
@@ -140,7 +180,7 @@ def IV03(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV03').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV03').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
@@ -164,7 +204,7 @@ def IV04(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV04').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV04').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
@@ -188,7 +228,7 @@ def IV05(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV05').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV05').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
@@ -212,7 +252,7 @@ def IV06(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV06').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV06').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
@@ -236,7 +276,7 @@ def IV07(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV07').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV07').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
@@ -260,7 +300,7 @@ def IV08(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV08').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV08').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
@@ -284,7 +324,7 @@ def IV09(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV09').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV09').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
@@ -308,7 +348,7 @@ def IV10(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV10').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV10').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
@@ -332,7 +372,7 @@ def IV11(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV11').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV11').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
@@ -356,7 +396,7 @@ def IV12(page=1):
                     author=g.user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext('Your post is now live!'))
+        flash(gettext('Tvoje slanje je sada živo!'))
         return redirect(url_for('index'))
     dnevnik = Dnevnik.query.filter_by(razred='IV12').order_by(Dnevnik.prezime).all()
     dolaze = Dnevnik.query.filter_by(razred='IV12').filter_by(dolazi='D').order_by(Dnevnik.prezime).all()
